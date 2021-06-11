@@ -10,11 +10,21 @@ using System.Windows.Forms;
 
 namespace vlastny_projekt
 {
-    public partial class Form1 : Form
+    public partial class Prihlasenie : Form
     {
-        public Form1()
+        public Prihlasenie()
         {
             InitializeComponent();
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            //this.Hide();
+        }
+
+        private void buttonPrihlas_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
