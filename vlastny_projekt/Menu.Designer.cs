@@ -32,11 +32,12 @@ namespace vlastny_projekt
             this.buttonPouzivatelia = new System.Windows.Forms.Button();
             this.buttonTovar = new System.Windows.Forms.Button();
             this.buttonStatistiky = new System.Windows.Forms.Button();
+            this.buttonUdaje = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // buttonPouzivatelia
             // 
-            this.buttonPouzivatelia.Location = new System.Drawing.Point(12, 12);
+            this.buttonPouzivatelia.Location = new System.Drawing.Point(12, 47);
             this.buttonPouzivatelia.Name = "buttonPouzivatelia";
             this.buttonPouzivatelia.Size = new System.Drawing.Size(199, 29);
             this.buttonPouzivatelia.TabIndex = 0;
@@ -46,7 +47,7 @@ namespace vlastny_projekt
             // 
             // buttonTovar
             // 
-            this.buttonTovar.Location = new System.Drawing.Point(12, 47);
+            this.buttonTovar.Location = new System.Drawing.Point(12, 82);
             this.buttonTovar.Name = "buttonTovar";
             this.buttonTovar.Size = new System.Drawing.Size(199, 29);
             this.buttonTovar.TabIndex = 1;
@@ -56,7 +57,7 @@ namespace vlastny_projekt
             // 
             // buttonStatistiky
             // 
-            this.buttonStatistiky.Location = new System.Drawing.Point(12, 82);
+            this.buttonStatistiky.Location = new System.Drawing.Point(12, 117);
             this.buttonStatistiky.Name = "buttonStatistiky";
             this.buttonStatistiky.Size = new System.Drawing.Size(199, 29);
             this.buttonStatistiky.TabIndex = 2;
@@ -64,11 +65,21 @@ namespace vlastny_projekt
             this.buttonStatistiky.UseVisualStyleBackColor = true;
             this.buttonStatistiky.Click += new System.EventHandler(this.buttonStatistiky_Click);
             // 
+            // buttonUdaje
+            // 
+            this.buttonUdaje.Location = new System.Drawing.Point(12, 12);
+            this.buttonUdaje.Name = "buttonUdaje";
+            this.buttonUdaje.Size = new System.Drawing.Size(199, 29);
+            this.buttonUdaje.TabIndex = 3;
+            this.buttonUdaje.Text = "Osobné údaje";
+            this.buttonUdaje.UseVisualStyleBackColor = true;
+            // 
             // Menu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(223, 132);
+            this.ClientSize = new System.Drawing.Size(223, 153);
+            this.Controls.Add(this.buttonUdaje);
             this.Controls.Add(this.buttonStatistiky);
             this.Controls.Add(this.buttonTovar);
             this.Controls.Add(this.buttonPouzivatelia);
@@ -83,5 +94,6 @@ namespace vlastny_projekt
         private System.Windows.Forms.Button buttonPouzivatelia;
         private System.Windows.Forms.Button buttonTovar;
         private System.Windows.Forms.Button buttonStatistiky;
+        private System.Windows.Forms.Button buttonUdaje;
     }
 }

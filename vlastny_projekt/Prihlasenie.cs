@@ -35,7 +35,7 @@ namespace vlastny_projekt
         private void buttonPrihlas_Click(object sender, EventArgs e)
         {
             string connetionString;
-            connetionString = @"Server=.\SQL_PIB;Database=PIB;Trusted_Connection=True;";
+            connetionString = @"Server=.\SQL_PIB;Database=projekt;Trusted_Connection=True;";
             SqlConnection cnn = new SqlConnection(connetionString);
             cnn.Open();
             MessageBox.Show("Connection Open  !");
