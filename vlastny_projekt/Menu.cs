@@ -12,9 +12,11 @@ namespace vlastny_projekt
 {
     public partial class Menu : Form
     {
-        public Menu()
+        private int _idPrihlaseny;
+        public Menu(int zamestnanec)
         {
             InitializeComponent();
+            _idPrihlaseny = zamestnanec;
         }
 
         private void buttonPouzivatelia_Click(object sender, EventArgs e)
@@ -30,6 +32,19 @@ namespace vlastny_projekt
         private void buttonStatistiky_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void buttonUdaje_Click(object sender, EventArgs e)
+        {
+            var oknoUdaje = new OsobneUdaje(_idPrihlaseny);
+            oknoUdaje.Location = this.Location;
+            oknoUdaje.StartPosition = FormStartPosition.Manual;
+            oknoUdaje.FormClosing += delegate {
+                this.Show();
+                this.Location = oknoUdaje.Location;
+            };
+            oknoUdaje.Show();
+            this.Hide();
         }
     }
 }

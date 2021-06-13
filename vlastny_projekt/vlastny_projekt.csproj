@@ -37,6 +37,7 @@
       <HintPath>packages\Dapper.2.0.90\lib\net461\Dapper.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -49,6 +50,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataLayer\Entities\Zamestnanec_udaje.cs" />
+    <Compile Include="DataLayer\Pomocky.cs" />
+    <Compile Include="DataLayer\Queries.cs" />
     <Compile Include="Menu.cs">
       <SubType>Form</SubType>
     </Compile>

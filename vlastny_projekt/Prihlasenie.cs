@@ -8,7 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
-using System.Data;
 
 namespace vlastny_projekt
 {
@@ -34,12 +33,19 @@ namespace vlastny_projekt
 
         private void buttonPrihlas_Click(object sender, EventArgs e)
         {
-            string connetionString;
-            connetionString = @"Server=.\SQL_PIB;Database=projekt;Trusted_Connection=True;";
-            SqlConnection cnn = new SqlConnection(connetionString);
-            cnn.Open();
-            MessageBox.Show("Connection Open  !");
-            cnn.Close();
+            var id = DataLayer.Queries.Prihlasenie(textBoxMeno.Text,textBoxHeslo.Text);
+            if(id != -1)
+            {
+                var oknoMenu = new Menu(id);
+                oknoMenu.Location = this.Location;
+                oknoMenu.StartPosition = FormStartPosition.Manual;
+                oknoMenu.FormClosing += delegate {
+                    this.Show();
+                    this.Location = oknoMenu.Location;
+                };
+                oknoMenu.Show();
+                this.Hide();
+            }
         }
     }
 }
