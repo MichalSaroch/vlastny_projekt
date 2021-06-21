@@ -23,14 +23,14 @@ namespace vlastny_projekt
             _prihlaseny = DataLayer.Queries.ZiskajZamestnanecUdaje(_idPrihlaseny);
             textBoxMeno.Text = _prihlaseny.meno;
             textBoxPriezvisko.Text = _prihlaseny.priezvisko;
-            if (_prihlaseny.datum_narodenia != null  &&  !(DateTime.Parse(_prihlaseny.datum_narodenia) < dateTimePicker1.MinDate))
-                dateTimePicker1.Value = DateTime.Parse(_prihlaseny.datum_narodenia);
+            if (_prihlaseny.datum_narodenia != null  &&  !(_prihlaseny.datum_narodenia < dateTimePicker1.MinDate))
+                dateTimePicker1.Value = _prihlaseny.datum_narodenia;
             else
                 dateTimePicker1.Value = dateTimePicker1.MaxDate;
             textBoxMesto.Text = _prihlaseny.mesto;
             textBoxAdresa.Text = _prihlaseny.adresa;
             textBoxPSC.Text = _prihlaseny.psc;
-            textBoxCislo.Text = _prihlaseny.telefonne_cislo.Substring(5); ;
+            textBoxCislo.Text = _prihlaseny.telefonne_cislo?.Substring(5); ;
 
         }
 
@@ -61,9 +61,9 @@ namespace vlastny_projekt
                 temp.priezvisko = null;
 
             if (dateTimePicker1.Value != dateTimePicker1.MaxDate)
-                temp.datum_narodenia = dateTimePicker1.Value.ToShortDateString();
+                temp.datum_narodenia = dateTimePicker1.Value;
             else
-                temp.datum_narodenia = null;
+                temp.datum_narodenia = DateTime.Now;
 
             if (textBoxMesto.TextLength != 0)
                 temp.mesto = textBoxMesto.Text;

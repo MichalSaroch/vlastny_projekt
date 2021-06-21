@@ -21,7 +21,15 @@ namespace vlastny_projekt
 
         private void buttonPouzivatelia_Click(object sender, EventArgs e)
         {
-
+            var oknoZakaznici = new Zakaznici();
+            oknoZakaznici.Location = this.Location;
+            oknoZakaznici.StartPosition = FormStartPosition.Manual;
+            oknoZakaznici.FormClosing += delegate {
+                this.Show();
+                this.Location = oknoZakaznici.Location;
+            };
+            oknoZakaznici.Show();
+            this.Hide();
         }
 
         private void buttonTovar_Click(object sender, EventArgs e)

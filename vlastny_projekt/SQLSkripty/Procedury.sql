@@ -36,3 +36,20 @@ UPDATE Zamestnanec_udaje
 SET meno = @zmenaMena, priezvisko = @zmenaPriezviska, mesto = @zmenaMesta, adresa = @zmenaAdresy, psc = @zmenaPsc, telefonne_cislo = @zmenaCisla
 WHERE ID_Zamestnanec = @idZam
 GO
+
+CREATE PROCEDURE RegistraciaDostupnost @meno varchar(100)
+AS
+SELECT ID FROM Zamestnanec WHERE meno = @meno
+GO
+
+CREATE PROCEDURE ZoznamOsob @priezvisko varchar(100)
+AS
+SELECT * FROM Osoba WHERE priezvisko LIKE '%' + @priezvisko + '%'
+GO
+
+CREATE PROCEDURE UpdateOsoba @zmenaDatumuNarodenia date, @zmenaMesta varchar(100), @zmenaAdresy varchar(100), @zmenaPsc varchar(20), @zmenaCisla varchar(20), @ID int
+AS
+UPDATE Osoba
+SET datum_narodenia = @zmenaDatumuNarodenia, mesto = @zmenaMesta, adresa = @zmenaAdresy, psc = @zmenaPsc, telefonne_cislo = @zmenaCisla
+WHERE ID = @ID
+GO
