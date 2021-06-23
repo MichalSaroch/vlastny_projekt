@@ -42,9 +42,18 @@ namespace vlastny_projekt.DataLayer
 
         public List<T> NacitajDataTransakcia<T, U>(string ulozenaProcedura, U parametre)
         {
-            
-            List<T> nacitaneData = _pripojenie.Query<T>(ulozenaProcedura, parametre,
-                commandType: CommandType.StoredProcedure, transaction: _transakcia).ToList();
+            List<T> nacitaneData = null;
+            if (parametre == null)
+            {
+                nacitaneData = _pripojenie.Query<T>(ulozenaProcedura,
+                    commandType: CommandType.StoredProcedure, transaction: _transakcia).ToList();
+            }
+            else
+            {
+                nacitaneData = _pripojenie.Query<T>(ulozenaProcedura, parametre,
+                    commandType: CommandType.StoredProcedure, transaction: _transakcia).ToList();
+            }
+
             return nacitaneData;
         }
         public void UlozDataTransakcia<T>(string ulozenaProcedura, T parametre)

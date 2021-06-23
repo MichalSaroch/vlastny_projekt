@@ -1,6 +1,10 @@
-CREATE PROCEDURE Registracia @noveMeno varchar(100), @noveHeslo varchar(100), @novySalt varchar(100)
+CREATE PROCEDURE Registracia
+@noveMeno varchar(100),
+@noveHeslo varchar(100),
+@novySalt varchar(100),
+@vlozeneID int OUTPUT
 AS
-INSERT INTO Zamestnanec (meno, heslo, salt) VALUES (@noveHeslo, @noveHeslo, @novySalt);
+INSERT INTO Zamestnanec (meno, heslo, salt) OUTPUT INSERTED.ID VALUES (@noveMeno, @noveHeslo, @novySalt) ;
 GO
 
 CREATE PROCEDURE Prihlasenie_salt @prihlasMeno varchar(100)

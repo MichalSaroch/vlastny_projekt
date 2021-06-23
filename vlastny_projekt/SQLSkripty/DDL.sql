@@ -62,4 +62,5 @@ CREATE TABLE Transakcie (
 CREATE TABLE Transakcie_Produkty (
 	ID int NOT NULL IDENTITY(1,1) PRIMARY KEY,
 	ID_Produkty int NOT NULL FOREIGN KEY REFERENCES Produkty(ID)
+	ID_Transakcie int NOT NULL FOREIGN KEY REFERENCES Transakcie(ID)
 );

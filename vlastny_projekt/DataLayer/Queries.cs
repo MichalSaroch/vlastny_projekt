@@ -24,26 +24,35 @@ namespace vlastny_projekt.DataLayer
                 {
                     using (DataPristup sql = new DataPristup())
                     {
-                        sql.ZacatTransakciu("PIB");
-                        var zisti_dostupnost = sql.NacitajDataTransakcia<int, dynamic>("dbo.RegistraciaDostupnost @meno", new { meno = meno });
-                        if (zisti_dostupnost.Count == 0)
+                        try
                         {
-                            sql.UlozDataTransakcia("dbo.Registracia", new { noveMeno = meno, noveHeslo = hesloHash, novySalt = salt });
-                            var idZam = sql.NacitajDataTransakcia<int, dynamic>($"dbo.Prihlasenie", new { prihlasMeno = meno, prihlasHeslo = hesloHash }).First();
-                            sql.UlozDataTransakcia("dbo.VytvorZamestnanec_udaje", new { zamID = idZam});
-                            MessageBox.Show("Registracia prebehla uspesne");
-                            return;
+                            sql.ZacatTransakciu("PIB");
+                            var zisti_dostupnost = sql.NacitajDataTransakcia<int, dynamic>("dbo.RegistraciaDostupnost", new { meno = meno });
+                            if (zisti_dostupnost.Count == 0)
+                            {
+                                int idZam = 0;
+                                idZam = sql.NacitajDataTransakcia<int, dynamic>("dbo.Registracia", new { noveMeno = meno, noveHeslo = hesloHash, novySalt = salt, vlozeneID = idZam}).First();
+                                //var idZam = sql.NacitajDataTransakcia<int, dynamic>($"dbo.Prihlasenie", null).First();
+                                sql.UlozDataTransakcia("dbo.VytvorZamestnanec_udaje", new { zamID = idZam });
+                                MessageBox.Show("Registracia prebehla uspesne");
+                                return;
+                            }
+                            else
+                            {
+                                MessageBox.Show("Pouzivatel s tymto meno uz existuje");
+                                return;
+                            }
                         }
-                        else
+                        catch (Exception ex)
                         {
-                            MessageBox.Show("Pouzivatel s tymto meno uz existuje");
-                            return;
+                            MessageBox.Show(ex.Message);
+                            sql.RollbackTransakcia();
                         }
                     }
                 }
-                catch (Exception ex)
+                catch //(Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    //MessageBox.Show(ex.Message);
                 }
             }
             MessageBox.Show($"Nastala chyba pri komunikacii s databazou");
@@ -58,26 +67,33 @@ namespace vlastny_projekt.DataLayer
                 {
                     using (DataPristup sql = new DataPristup())
                     {
-                        sql.ZacatTransakciu("PIB");
-                        string salt = sql.NacitajDataTransakcia<string, dynamic>("dbo.Prihlasenie_salt", new { prihlasMeno = meno }).First();
-                        var hesloHash = Pomocky.VytvorSHA256(heslo + salt);
-                        var nasiel = sql.NacitajDataTransakcia<int, dynamic>("dbo.Prihlasenie", new { prihlasMeno = meno, prihlasHeslo = hesloHash });
-                        if (nasiel.Count == 1)
+                        try
                         {
-                            int vysledok = nasiel.First();
-                            return vysledok;
+                            sql.ZacatTransakciu("PIB");
+                            string salt = sql.NacitajDataTransakcia<string, dynamic>("dbo.Prihlasenie_salt", new { prihlasMeno = meno }).First();
+                            var hesloHash = Pomocky.VytvorSHA256(heslo + salt);
+                            var nasiel = sql.NacitajDataTransakcia<int, dynamic>("dbo.Prihlasenie", new { prihlasMeno = meno, prihlasHeslo = hesloHash });
+                            if (nasiel.Count == 1)
+                            {
+                                int vysledok = nasiel.First();
+                                return vysledok;
+                            }
+                            else
+                            {
+                                MessageBox.Show("Nespravne udaje");
+                                return -1;
+                            }
                         }
-                        else
+                        catch
                         {
-                            MessageBox.Show("Nespravne udaje");
-                            return -1;
+                            sql.RollbackTransakcia();
                         }
                     }
                     
                 }
-                catch (Exception ex)
+                catch //(Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    //MessageBox.Show(ex.Message);
                 }
             }
             MessageBox.Show("Nastala chyba pri komunikacii s databazou");
@@ -94,9 +110,9 @@ namespace vlastny_projekt.DataLayer
                     var osoba = sql.NacitajData<Zamestnanec_udaje, dynamic>("dbo.ZiskajZamestnanec_udaje", new { zamID = id }, "PIB");
                     return osoba.First();
                 }
-                catch (Exception ex)
+                catch //(Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    //MessageBox.Show(ex.Message);
                 }
             }
             MessageBox.Show("Nastala chyba pri komunikacii s databazou");
@@ -113,9 +129,9 @@ namespace vlastny_projekt.DataLayer
                     sql.UlozData("dbo.UpdateZamestnanec_udaje", new { zmenaMena = zmena.meno, zmenaPriezviska = zmena.priezvisko, zmenaDatumuNarodenia = zmena.datum_narodenia, zmenaMesta = zmena.mesto, zmenaAdresy = zmena.adresa, zmenaPsc = zmena.adresa, zmenaCisla = zmena.telefonne_cislo, idZam = zmena.ID_Zamestnanec },"PIB");
                     return;
                 }
-                catch (Exception ex)
+                catch //(Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    //MessageBox.Show(ex.Message);
                 }
             }
             MessageBox.Show("Nastala chyba pri komunikacii s databazou");
@@ -132,9 +148,9 @@ namespace vlastny_projekt.DataLayer
                     List<Osoba> osoby = sql.NacitajData<Osoba,dynamic>("dbo.ZoznamOsob", new { priezvisko = priezvisko }, "PIB");
                     return osoby;
                 }
-                catch (Exception ex)
+                catch //(Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    //MessageBox.Show(ex.Message);
                 }
             }
             MessageBox.Show("Nastala chyba pri komunikacii s databazou");
@@ -152,9 +168,9 @@ namespace vlastny_projekt.DataLayer
                     sql.UlozData("dbo.UpdateOsoba", new { zmenaDatumuNarodenia = zmena.datum_narodenia, zmenaMesta = zmena.mesto, zmenaAdresy = zmena.adresa, zmenaPsc = zmena.adresa, zmenaCisla = zmena.telefonne_cislo, ID = zmena.ID }, "PIB");
                     return;
                 }
-                catch (Exception ex)
+                catch //(Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    //MessageBox.Show(ex.Message);
                 }
             }
             MessageBox.Show("Nastala chyba pri komunikacii s databazou");
