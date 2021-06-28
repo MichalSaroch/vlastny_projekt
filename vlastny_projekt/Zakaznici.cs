@@ -31,7 +31,6 @@ namespace vlastny_projekt
         {
             if (backgroundWorkerQuery.IsBusy != true)
             {
-                // Start the asynchronous operation.
                 button1.Enabled = false;
                 buttonZrusit.Enabled = true;
                 backgroundWorkerQuery.RunWorkerAsync();
@@ -102,12 +101,14 @@ namespace vlastny_projekt
             else if (e.Error != null)
             {
                 label2.Text = "Error: " + e.Error.Message;
+                button1.Enabled = true;
+                buttonZrusit.Enabled = false;
             }
             else
             {
                 label2.Text = "Data načítané!";
-                var books = (DataTable)e.Result;
-                dataGridViewOsoba.DataSource = books;
+                var vysledky = (DataTable)e.Result;
+                dataGridViewOsoba.DataSource = vysledky;
                 dataGridViewOsoba.Columns["ID"].Visible = false;
                 button1.Enabled = true;
                 buttonZrusit.Enabled = false;

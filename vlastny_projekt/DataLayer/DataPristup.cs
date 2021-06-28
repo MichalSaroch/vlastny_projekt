@@ -19,7 +19,7 @@ namespace vlastny_projekt.DataLayer
         {
             return ConfigurationManager.ConnectionStrings[meno].ConnectionString;
         }
-
+        #region data
         public List<T> NacitajData<T, U>(string ulozenaProcedura, U parametre, string cnnMeno)
         {
             var cnnString = ZiskajCnnString(cnnMeno);
@@ -40,19 +40,23 @@ namespace vlastny_projekt.DataLayer
             }
         }
 
+        public List<T> NacitajData<T>(string ulozenaProcedura, string cnnMeno)
+        {
+            var cnnString = ZiskajCnnString(cnnMeno);
+            using (var pripojenie = new SqlConnection(cnnString))
+            {
+                List<T> nacitaneData = pripojenie.Query<T>(ulozenaProcedura,
+                    commandType: CommandType.StoredProcedure).ToList();
+                return nacitaneData;
+            }
+        }
+        #endregion
+        #region dataTransakcie
         public List<T> NacitajDataTransakcia<T, U>(string ulozenaProcedura, U parametre)
         {
             List<T> nacitaneData = null;
-            if (parametre == null)
-            {
-                nacitaneData = _pripojenie.Query<T>(ulozenaProcedura,
-                    commandType: CommandType.StoredProcedure, transaction: _transakcia).ToList();
-            }
-            else
-            {
-                nacitaneData = _pripojenie.Query<T>(ulozenaProcedura, parametre,
-                    commandType: CommandType.StoredProcedure, transaction: _transakcia).ToList();
-            }
+            nacitaneData = _pripojenie.Query<T>(ulozenaProcedura, parametre,
+                commandType: CommandType.StoredProcedure, transaction: _transakcia).ToList();
 
             return nacitaneData;
         }
@@ -64,6 +68,16 @@ namespace vlastny_projekt.DataLayer
 
         }
 
+        public List<T> NacitajDataTransakcia<T>(string ulozenaProcedura)
+        {
+            List<T> nacitaneData = null;
+            nacitaneData = _pripojenie.Query<T>(ulozenaProcedura,
+                commandType: CommandType.StoredProcedure, transaction: _transakcia).ToList();
+
+            return nacitaneData;
+        }
+        #endregion
+        #region transakcie
         public void ZacatTransakciu(string cnnMeno)
         {
             var cnnString = ZiskajCnnString(cnnMeno);
@@ -105,5 +119,6 @@ namespace vlastny_projekt.DataLayer
             _transakcia = null;
             _pripojenie = null;
         }
+        #endregion
     }
 }

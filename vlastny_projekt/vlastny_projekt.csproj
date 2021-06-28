@@ -52,6 +52,12 @@
   <ItemGroup>
     <Compile Include="DataLayer\DataPristup.cs" />
     <Compile Include="DataLayer\Entities\Osoba.cs" />
+    <Compile Include="DataLayer\Entities\PocetPoloziek.cs" />
+    <Compile Include="DataLayer\Entities\PoctyTransakcii.cs" />
+    <Compile Include="DataLayer\Entities\Produkt.cs" />
+    <Compile Include="DataLayer\Entities\ProduktyVTransakcii.cs" />
+    <Compile Include="DataLayer\Entities\TransakciaOsoby.cs" />
+    <Compile Include="DataLayer\Entities\ZamestnanecPocetTransak.cs" />
     <Compile Include="DataLayer\Entities\Zamestnanec_udaje.cs" />
     <Compile Include="DataLayer\Pomocky.cs" />
     <Compile Include="DataLayer\Queries.cs" />
@@ -80,6 +86,12 @@
     </Compile>
     <Compile Include="Registracia.Designer.cs">
       <DependentUpon>Registracia.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Statistiky.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Statistiky.Designer.cs">
+      <DependentUpon>Statistiky.cs</DependentUpon>
     </Compile>
     <Compile Include="Zakaznici.cs">
       <SubType>Form</SubType>
@@ -114,6 +126,9 @@
     <EmbeddedResource Include="Registracia.resx">
       <DependentUpon>Registracia.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Statistiky.resx">
+      <DependentUpon>Statistiky.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Zakaznici.resx">
       <DependentUpon>Zakaznici.cs</DependentUpon>
     </EmbeddedResource>
@@ -138,19 +153,6 @@
   <ItemGroup>
     <Content Include="SQLSkripty\DDL.sql" />
     <Content Include="SQLSkripty\DML.sql" />
-    <Content Include="SQLSkripty\DML001.sql" />
-    <Content Include="SQLSkripty\DML002.sql" />
-    <Content Include="SQLSkripty\DML003.sql" />
-    <Content Include="SQLSkripty\DML004.sql" />
-    <Content Include="SQLSkripty\DML005.sql" />
-    <Content Include="SQLSkripty\DML006.sql" />
-    <Content Include="SQLSkripty\DML007.sql" />
-    <Content Include="SQLSkripty\DML008.sql" />
-    <Content Include="SQLSkripty\DML009.sql" />
-    <Content Include="SQLSkripty\DML010.sql" />
-    <Content Include="SQLSkripty\DML011.sql" />
-    <Content Include="SQLSkripty\DML012.sql" />
-    <Content Include="SQLSkripty\DML013.sql" />
     <Content Include="SQLSkripty\Procedury.sql" />
     <Content Include="SQLSkripty\udaje.txt" />
   </ItemGroup>

@@ -1,3 +1,5 @@
+USE projekt
+GO
 CREATE PROCEDURE Registracia
 @noveMeno varchar(100),
 @noveHeslo varchar(100),
@@ -56,4 +58,77 @@ AS
 UPDATE Osoba
 SET datum_narodenia = @zmenaDatumuNarodenia, mesto = @zmenaMesta, adresa = @zmenaAdresy, psc = @zmenaPsc, telefonne_cislo = @zmenaCisla
 WHERE ID = @ID
+GO
+
+CREATE PROCEDURE ProduktyVTransakcii @hladaneID int
+AS
+SELECT tr.ID, pro.nazov, pro.cena, typ.nazov AS typTransakcie
+FROM Transakcie AS tr
+JOIN Transakcie_Produkty AS trp
+ON tr.ID = trp.ID_Transakcie
+JOIN Produkty AS pro
+ON trp.ID_Produkty = pro.ID
+JOIN Transakcie_Typ AS typ
+ON tr.ID_Typ = typ.ID
+WHERE tr.ID = @hladaneID;
+GO
+
+CREATE PROCEDURE PoctyPoloziekVTransakcii
+AS
+SELECT TOP (1000000) ID_Transakcie, COUNT(*) AS pocetPoloziek
+FROM Transakcie_Produkty
+GROUP BY ID_Transakcie
+ORDER BY pocetPoloziek DESC;
+GO
+
+CREATE PROCEDURE PoctyTransakciiSRovnakymPoctomPoloziek
+AS
+SELECT poc.pocetPoloziek, COUNT(poc.pocetPoloziek) AS pocetTransakcii
+FROM (SELECT COUNT(*) AS pocetPoloziek
+FROM Transakcie_Produkty
+GROUP BY ID_Transakcie) AS poc
+GROUP BY poc.pocetPoloziek
+ORDER BY poc.pocetPoloziek DESC;
+GO
+
+CREATE PROCEDURE TransakciaTypOsobaAZamestnanec @hladaneID int
+AS
+SELECT tr.ID AS IDTransakcie,
+zam.meno AS prihlMeno,
+zamudaj.meno AS menoZamestnanca,
+zamudaj.priezvisko AS priezviskoZamestnanca,
+os.meno AS menoZakaznika,
+os.priezvisko AS priezviskoZakaznika,
+typ.nazov AS typTransakcie
+FROM Transakcie AS tr
+INNER JOIN Zamestnanec AS zam
+ON tr.ID_Zamestnanec = zam.ID
+INNER JOIN Transakcie_Typ AS typ
+ON tr.ID_Typ = typ.ID
+INNER JOIN Osoba AS os
+ON tr.ID_Osoba = os.ID
+INNER JOIN Zamestnanec_udaje AS zamudaj
+ON tr.ID_Zamestnanec = zamudaj.ID_Zamestnanec
+WHERE tr.ID = @hladaneID;
+GO
+
+CREATE PROCEDURE ProduktSNazvomVyrobcu @hladanyNazov varchar(100)
+AS
+SELECT pr.ID, vy.meno AS vyrobcaMeno, pr.nazov, pr.cena, pr.dostupne
+FROM Produkty AS pr
+LEFT JOIN Vyrobca as vy ON pr.ID_vyrobca = vy.ID
+WHERE pr.nazov LIKE '%' + @hladanyNazov + '%';
+GO
+
+CREATE PROCEDURE ZamestnanciPocetTransakciiARebricek
+AS
+SELECT pocet.ID_Zamestnanec, zam.meno AS prihlMeno, udaj.meno, udaj.priezvisko, pocet.pocetTransakcii, RANK() OVER
+(ORDER BY pocet.pocetTransakcii DESC) AS rebricekPoctuTransakcii
+FROM (SELECT tr.ID_Zamestnanec, COUNT(*) AS pocetTransakcii
+FROM Transakcie AS tr
+GROUP BY tr.ID_Zamestnanec) AS pocet
+JOIN Zamestnanec AS zam 
+ON pocet.ID_Zamestnanec = zam.ID
+JOIN Zamestnanec_udaje AS udaj
+ON pocet.ID_Zamestnanec = udaj.ID_Zamestnanec;
 GO

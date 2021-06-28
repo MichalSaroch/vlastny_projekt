@@ -32,14 +32,17 @@ namespace vlastny_projekt
             this.Hide();
         }
 
-        private void buttonTovar_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void buttonStatistiky_Click(object sender, EventArgs e)
         {
-
+            var oknoStatistiky = new Statistiky();
+            oknoStatistiky.Location = this.Location;
+            oknoStatistiky.StartPosition = FormStartPosition.Manual;
+            oknoStatistiky.FormClosing += delegate {
+                this.Show();
+                this.Location = oknoStatistiky.Location;
+            };
+            oknoStatistiky.Show();
+            this.Hide();
         }
 
         private void buttonUdaje_Click(object sender, EventArgs e)
